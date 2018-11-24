@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Grandpy robot tells you funny stories about places">
+    <meta name="author" content="Zoé Belleton">
+    <title>Landing Cute Page</title>
+    <link rel="shortcut icon" type="image/png"
+          href="https://images.duckduckgo.com/iu/?u=https%3A%2F%2Fimage.flaticon.com%2Ficons%2Fpng%2F512%2F270%2F270137.png&f=1"/>
+
+    <meta property="og:title" content="Landing Cute Page" />
+    <meta property="og:type" content="website" />
+
+    <!--Remplir ceci-->
+    <meta property="og:url" content="" />
+    <meta property="og:image" content="" />
+    <meta property="og:description" content="We feed cats and unicorns with RSS Data and other rainbow colored stuffs" />
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="../static/css/cover.css">
+    <link rel="stylesheet" href="../static/css/style.css">
+
+    <!-- Fonts Awesome -->
+    <link rel="stylesheet" href="../static/css/font_awesome_animations.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+          integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <!--<script src="https://use.fontawesome.com/470b91f216.js"></script>-->
+
+</head>
+
+<body class="text-center">
+
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+      <header class="masthead mb-auto">
+        <div class="inner">
+          <h3 class="masthead-brand"><i class="fas fa-robot fa-inverse"></i>Landing Page</h3>
+          <nav class="nav nav-masthead justify-content-center">
+              <!--I have removed href -->
+            <a class="nav-link active">Web App</a>
+            <!--<a class="nav-link" href="#">Features</a>-->
+            <!--<a class="nav-link" href="#">Contact</a>-->
+          </nav>
+        </div>
+      </header>
+
+    {% block body %}{% endblock %}
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript">$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};</script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <script src="../static/js/messaging.js"></script>
+    <script src="../static/js/wikipedia.js"></script>
+    <script src="../static/js/google_maps.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDL3Y5p7GsKor0nJ5mVZscqsd9hejr145s&libraries=places&callback=initMap"></script>
+    <script src="../static/js/bot_answer.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+  </body>
+</html>

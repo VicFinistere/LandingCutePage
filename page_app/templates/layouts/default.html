@@ -1,69 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+  <head>
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Grandpy robot tells you funny stories about places">
-    <meta name="author" content="Zoé Belleton">
-    <title>Landing Cute Page</title>
-    <link rel="shortcut icon" type="image/png"
-          href="https://images.duckduckgo.com/iu/?u=https%3A%2F%2Fimage.flaticon.com%2Ficons%2Fpng%2F512%2F270%2F270137.png&f=1"/>
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-    <meta property="og:title" content="Landing Cute Page" />
-    <meta property="og:type" content="website" />
+    <title>Landing cute page</title>
 
-    <!--Remplir ceci-->
-    <meta property="og:url" content="" />
-    <meta property="og:image" content="" />
-    <meta property="og:description" content="We feed cats and unicorns with RSS Data and other rainbow colored stuffs" />
+    <!-- Bootstrap core CSS-->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
-    <!-- Bootstrap Core CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
-    <!-- Theme CSS -->
-    <link rel="stylesheet" href="../static/css/cover.css">
-    <link rel="stylesheet" href="../static/css/style.css">
-
-    <!-- Fonts Awesome -->
-    <link rel="stylesheet" href="../static/css/font_awesome_animations.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+    <!-- Custom fonts for this template-->
+     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
           integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
-    <!--<script src="https://use.fontawesome.com/470b91f216.js"></script>-->
 
-</head>
+      <!-- Custom styles for this template-->
+    <link href="static/css/sb-admin.min.css" rel="stylesheet">
+    <link href="static/css/style.css" rel="stylesheet">
+  </head>
 
-<body class="text-center">
+  <body id="page-top">
 
-    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-      <header class="masthead mb-auto">
-        <div class="inner">
-          <h3 class="masthead-brand"><i class="fas fa-robot fa-inverse"></i>Landing Page</h3>
-          <nav class="nav nav-masthead justify-content-center">
-              <!--I have removed href -->
-            <a class="nav-link active">Web App</a>
-            <!--<a class="nav-link" href="#">Features</a>-->
-            <!--<a class="nav-link" href="#">Contact</a>-->
-          </nav>
+    <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
+
+      <a class="navbar-brand mr-1" href="index.html">Landing cute page =^.^=</a>
+
+      <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <!-- Navbar Search -->
+      <form  method="POST" action="{{ url_for('index') }}" class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+        <div class="input-group">
+
+          <input type="text" name="city" class="form-control" placeholder="City Name" aria-label="Search" aria-describedby="basic-addon2">
+          <div class="input-group-append">
+            <button class="btn btn-primary" type="submit">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
         </div>
-      </header>
+      </form>
+
+      <!-- Navbar -->
+      <ul class="navbar-nav ml-auto ml-md-0">
+        <li class="nav-item dropdown no-arrow mx-1">
+          <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-bell fa-fw"></i>
+            <span class="badge badge-danger">9+</span>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown no-arrow mx-1">
+          <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-envelope fa-fw"></i>
+            <span class="badge badge-danger">7</span>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="messagesDropdown">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown no-arrow">
+          <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-user-circle fa-fw"></i>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+            <a class="dropdown-item" href="#">Settings</a>
+            <a class="dropdown-item" href="#">Activity Log</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
+          </div>
+        </li>
+      </ul>
+
+    </nav>
+
 
     {% block body %}{% endblock %}
-    </div>
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script type="text/javascript">$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};</script>
-    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
-    <script src="../static/js/messaging.js"></script>
-    <script src="../static/js/wikipedia.js"></script>
-    <script src="../static/js/google_maps.js"></script>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDL3Y5p7GsKor0nJ5mVZscqsd9hejr145s&libraries=places&callback=initMap"></script>
-    <script src="../static/js/bot_answer.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+  <script src="static/js/push.min.js"></script>
+  <script>
+    Push.create("Welcome cutties !",{
+            body: "This is a langing cute page ( QT purpose )",
+            icon: 'https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Fsdl-stickershop.line.naver.jp%2Fproducts%2F0%2F0%2F1%2F1014241%2Fandroid%2Fstickers%2F637249.png%3Bcompress%3Dtrue&f=1',
+            timeout: 2000,
+            onClick: function () {
+                window.focus();
+                this.close();
+            }
+        });
+    Push.clear();
+  </script>
   </body>
 </html>
+

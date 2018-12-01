@@ -64,6 +64,7 @@ def create_weather_data(new_city):
     get_or_create_weather_data(name=name, temperature=temperature, description=description[0], icon=icon[0])
     return name
 
+
 @app.route('/weather', methods=['GET', 'POST'])
 def weather():
     if request.method == 'POST':

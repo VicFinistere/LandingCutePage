@@ -35,6 +35,9 @@ class WeatherData(db.Model):
 def index():
     status = request.form.get('status')
 
+    if not status:
+        status = "Map"
+
     # Weather data
     weather_data = WeatherData.query.all()
 

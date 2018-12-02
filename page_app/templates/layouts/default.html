@@ -27,6 +27,8 @@
     <!-- Custom styles for this template-->
     <link href="/static/css/sb-admin.min.css" rel="stylesheet">
     <link href="/static/css/style.css" rel="stylesheet">
+    <link href='/static/css/fullcalendar.min.css' rel='stylesheet' />
+    <link href='/static/css/fullcalendar.print.min.css' rel='stylesheet' media='print' />
 </head>
 
 <body id="page-top">
@@ -109,6 +111,7 @@
 <script src="/static/js/push.min.js"></script>
 <script src="/static/js/sb-admin.min.js"></script>
 <script src="/static/js/sb-admin.js"></script>
+<script type="text/javascript" >$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};</script>
 <script>
 
     // Push.create("Welcome cutties !",{
@@ -125,9 +128,9 @@
     if (window.location.href.indexOf("city_map") > -1) {
         var url = window.location.href;
         var re = /.*city_map(.*).*/;
-        var newtext = url.replace(re, "$1");
-        var newtext = newtext.replace('/', '');
-        getLocation(newtext);
+        var route = url.replace(re, "$1");
+        var city = route.replace('/', '');
+        getLocation(city);
     } else if (navigator.geolocation){
         navigator.geolocation.getCurrentPosition(showPosition);
     } else {
@@ -137,31 +140,126 @@
 
 
     function showPosition(position) {
-        var mymap = L.map('mapid').setView([position.coords.latitude, position.coords.longitude], 13);
-        addLayer(mymap)
+        var myMap = L.map('mapid').setView([position.coords.latitude, position.coords.longitude], 13);
+        addLayer(myMap)
+    }
+
+    function call_map_error() {
+        $.getJSON($SCRIPT_ROOT + '/err_map', {},
+            function (data)
+            {
+                if (data !== 'failed')
+                {
+                    console.log("Sucess !")
+                }
+                else
+                {
+                    console.log("Failed...")
+                }
+            });
     }
 
     function getLocation(request) {
+        try{
+            var geocoder = new L.Control.Geocoder.Nominatim();
 
-        var geocoder = new L.Control.Geocoder.Nominatim();
-
-        geocoder.geocode(request, function(results) {
-            var lat = results[0].center.lat;
-            var lng = results[0].center.lng;
-            var mymap = L.map('mapid').setView([lat, lng], 13);
-            addLayer(mymap)
-        });
+            geocoder.geocode(request, function(results) {
+                var lat = results[0].center.lat;
+                var lng = results[0].center.lng;
+                var myMap = L.map('mapid').setView([lat, lng], 13);
+                addLayer(myMap)
+            });
+        }
+        catch(error){
+            call_map_error()
+        }
     }
 
 
-    function addLayer(mymap){
+    function addLayer(myMap){
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
             maxZoom: 18,
             id: 'mapbox.streets',
             accessToken: 'pk.eyJ1Ijoiem9laW5mcCIsImEiOiJjanA0aWEydjAwcW9iM2tsa2V1aHA5Zm16In0.tnBdx4cxY1HGfgkHhckJ-g'
-        }).addTo(mymap);
+        }).addTo(myMap);
     }
+
+
+</script>
+<script src='/static/js/moment.min.js'></script>
+<script src='/static/js/fullcalendar.js'></script>
+<script>
+
+
+
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,basicWeek,basicDay'
+            },
+            defaultDate: '2018-03-12',
+            navLinks: true, // can click day/week names to navigate views
+            editable: true,
+            eventLimit: true, // allow "more" link when too many events
+            events: [
+                {
+                    title: 'All Day Event',
+                    start: '2018-03-01'
+                },
+                {
+                    title: 'Long Event',
+                    start: '2018-03-07',
+                    end: '2018-03-10'
+                },
+                {
+                    id: 999,
+                    title: 'Repeating Event',
+                    start: '2018-03-09T16:00:00'
+                },
+                {
+                    id: 999,
+                    title: 'Repeating Event',
+                    start: '2018-03-16T16:00:00'
+                },
+                {
+                    title: 'Conference',
+                    start: '2018-03-11',
+                    end: '2018-03-13'
+                },
+                {
+                    title: 'Meeting',
+                    start: '2018-03-12T10:30:00',
+                    end: '2018-03-12T12:30:00'
+                },
+                {
+                    title: 'Lunch',
+                    start: '2018-03-12T12:00:00'
+                },
+                {
+                    title: 'Meeting',
+                    start: '2018-03-12T14:30:00'
+                },
+                {
+                    title: 'Happy Hour',
+                    start: '2018-03-12T17:30:00'
+                },
+                {
+                    title: 'Dinner',
+                    start: '2018-03-12T20:00:00'
+                },
+                {
+                    title: 'Birthday Party',
+                    start: '2018-03-13T07:00:00'
+                },
+                {
+                    title: 'Click for Google',
+                    url: 'http://google.com/',
+                    start: '2018-03-28'
+                }
+            ]
+        });
 
 
 </script>

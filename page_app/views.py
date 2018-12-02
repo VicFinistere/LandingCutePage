@@ -1,7 +1,8 @@
 import imaplib
+import time
 
 import requests
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -30,39 +31,65 @@ class WeatherData(db.Model):
     icon = db.Column(db.String(50), primary_key=False)
 
 
-def get_or_create_weather_data(name, temperature, description, icon):
-    exists = db.session.query(WeatherData.id).filter_by(name=name).scalar() is not None
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    status = request.form.get('status')
 
-    if exists:
-        return db.session.query(WeatherData).filter_by(name=name).first()
-    else:
-        new_weather_obj = WeatherData(name=name, temperature=temperature, description=description, icon=icon)
-        db.session.add(new_weather_obj)
-        db.session.commit()
-        return name
+    # Weather data
+    weather_data = WeatherData.query.all()
+
+    # To do list
+    todo_cards = TodoCard.query.all()
+    todo_lists = get_todo_lists(todo_cards)
+
+    # Mail counter
+    mails_counters = MailCounter.query.all()
+    mail_amount = get_mail_amount(mails_counters)
+
+    timestamp = time.strftime('%d %B %Y %H:%M:%S')
+
+    return render_template(template_name_or_list='index.html',
+                           timestamp=timestamp,
+                           weather_data=weather_data,
+                           status=status,
+                           todo_lists=todo_lists,
+                           mail_counter=mail_amount)
 
 
-@app.route('/rm', methods=['GET', 'POST'])
-def rm():
-    deleted_city = request.form['deleted_city']
-    WeatherData.query.filter_by(name=deleted_city).delete()
-    print("Removing " + deleted_city + " from cities !")
-    db.session.commit()
+@app.route('/mail', methods=['GET', 'POST'])
+def mail():
+    val = 0
+    try:
+        # Outlook
+        client = imaplib.IMAP4_SSL('imap-mail.outlook.com', port=993)
+        client.login('zoebelleton@outlook.fr', 'P0rt1she@d')
+        client.select()
+
+        # # Gmail
+        # client = imaplib.IMAP4_SSL('imap.gmail.com', port=993)
+        # client.login('zoebelleton@gmail.com', 'B0r1ngPassw0rd')
+        # client.select()
+
+        status, data = client.search(None, "UnSeen")
+        if status != 'OK':
+            print("No messages found!")
+        else:
+            val = len(data[0].split())
+
+            if val != 0:
+                print("Found mails amount : {}".format(val))
+                new_mail_counter = MailCounter(count=val)
+                db.session.add(new_mail_counter)
+                db.session.commit()
+            else:
+                print(val)
+
+        client.logout()
+
+    except ConnectionError:
+        print(val)
+
     return index()
-
-
-def create_weather_data(new_city):
-    url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=metric&appid=254d0bd84bee0354b5b34e17f870cf04'
-
-    r = requests.get(url.format(new_city)).json()
-
-    name = new_city
-    temperature = r['main']['temp']
-    description = r['weather'][0]['description'],
-    icon = r['weather'][0]['icon'],
-    print(new_city)
-    get_or_create_weather_data(name=name, temperature=temperature, description=description[0], icon=icon[0])
-    return name
 
 
 @app.route('/weather', methods=['GET', 'POST'])
@@ -89,16 +116,28 @@ def update_weather():
     return index()
 
 
-def get_or_create_todo(list_name, name):
-    exists = db.session.query(TodoCard.id).filter_by(name=name).scalar() is not None
+@app.route('/rm', methods=['GET', 'POST'])
+def rm():
+    deleted_city = request.form['deleted_city']
+    WeatherData.query.filter_by(name=deleted_city).delete()
+    print("Removing " + deleted_city + " from cities !")
+    db.session.commit()
+    return index()
 
-    if exists:
-        return db.session.query(TodoCard).filter_by(name=name).first()
-    else:
-        new_todo_obj = WeatherData(list_name=list_name, name=name)
-        db.session.add(new_todo_obj)
-        db.session.commit()
-        return name
+
+@app.route('/city_map/<city>', methods=['GET', 'POST'])
+def city_map(city):
+    return index()
+
+
+@app.route('/geoloc_map', methods=['GET', 'POST'])
+def geoloc_map():
+    return index()
+
+
+@app.route('/err_map', methods=['GET', 'POST'])
+def error_map():
+    return redirect(url_for('index', map="error"))
 
 
 @app.route('/todo', methods=['GET', 'POST'])
@@ -110,7 +149,6 @@ def todo(board_id='5a58e9ba63b7c51ac07be475',
                             "?lists=open&list_fields=name&fields=name,desc"
                             "&key={key}&token={token}"
                             .format(boardid=board_id, key=api_key, token=api_pass)).json()
-
     except requests.exceptions.ConnectionError:
         print('Connexion error')
         return None
@@ -125,7 +163,6 @@ def todo(board_id='5a58e9ba63b7c51ac07be475',
                                  .format(listid=list_id, key=api_key, token=api_pass)).json()
 
         for item in list_data['cards']:
-
             if item['name'] is not None and current_list['name'] is not None:
                 get_or_create_todo(current_list['name'], item['name'])
             if list_name != current_list['name']:
@@ -135,36 +172,42 @@ def todo(board_id='5a58e9ba63b7c51ac07be475',
     return index()
 
 
-@app.route('/city_map/<city>', methods=['GET', 'POST'])
-def city_map(city):
-    return index()
+def create_weather_data(new_city):
+    url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=metric&appid=254d0bd84bee0354b5b34e17f870cf04'
+
+    r = requests.get(url.format(new_city)).json()
+
+    name = new_city
+    temperature = r['main']['temp']
+    description = r['weather'][0]['description'],
+    icon = r['weather'][0]['icon'],
+    print(new_city)
+    get_or_create_weather_data(name=name, temperature=temperature, description=description[0], icon=icon[0])
+    return name
 
 
-@app.route('/geoloc_map', methods=['GET', 'POST'])
-def geoloc_map():
-    return index()
+def get_or_create_weather_data(name, temperature, description, icon):
+    exists = db.session.query(WeatherData.id).filter_by(name=name).scalar() is not None
+
+    if exists:
+        return db.session.query(WeatherData).filter_by(name=name).first()
+    else:
+        new_weather_obj = WeatherData(name=name, temperature=temperature, description=description, icon=icon)
+        db.session.add(new_weather_obj)
+        db.session.commit()
+        return name
 
 
-@app.route('/mail', methods=['GET', 'POST'])
-def mail():
-    val = 0
-    try:
-        gmail = imaplib.IMAP4_SSL('imap.gmail.com', 993)
-        gmail.login('zoebelleton@gmail.com', 'B0r1ngPassw0rd')
-        gmail.select()
+def get_or_create_todo(list_name, name):
+    exists = db.session.query(TodoCard.id).filter_by(name=name).scalar() is not None
 
-        val = len(gmail.search(None, 'UnSeen')[1][0].split())
-
-        if val != 0:
-            print("Found mails amount : {}".format(val))
-            new_mail_counter = MailCounter(count=val)
-            db.session.add(new_mail_counter)
-            db.session.commit()
-        else:
-            print(val)
-    except ConnectionError:
-        print(val)
-    return index()
+    if exists:
+        return db.session.query(TodoCard).filter_by(name=name).first()
+    else:
+        new_todo_obj = WeatherData(list_name=list_name, name=name)
+        db.session.add(new_todo_obj)
+        db.session.commit()
+        return name
 
 
 def get_todo_list_names(todo_cards):
@@ -232,18 +275,3 @@ def get_todo_lists(todo_cards):
             todo_lists[i][0] = list_name
             todo_lists[i][1] = new_list
     return todo_lists
-
-
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    # Weather data
-    weather_data = WeatherData.query.all()
-    # To do list
-    todo_cards = TodoCard.query.all()
-    todo_lists = get_todo_lists(todo_cards)
-
-    # Mail counter
-    mails_counters = MailCounter.query.all()
-    mail_amount = get_mail_amount(mails_counters)
-
-    return render_template('index.html', weather_data=weather_data, todo_lists=todo_lists, mail_counter=mail_amount)

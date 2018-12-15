@@ -201,9 +201,19 @@ def ask_for_settings():
                            status=status)
 
 
+def fetch_cat(image=None):
+    response = requests.get('https://api.thecatapi.com/v1/images/search')
+
+    while image is None:
+        if response:
+            for res in response:
+                for data in json.loads(res):
+                    image = data['url']
+    return image
+
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    widget = request.form.get('widget')
     status = request.form.get('status')
     issues_query = request.form.get('issues_query')
 
@@ -244,6 +254,7 @@ def index():
                            todo_lists=todo_lists,
                            mail_counter=mail_amount,
                            git_data=git_data,
+                           cat=fetch_cat(),
                            saved_settings=saved_settings)
 
 
@@ -310,12 +321,9 @@ def weather():
             create_weather_data(new_city)
     return render_template(template_name_or_list='index.html',
                            timestamp=time.strftime('%d %B %Y %H:%M:%S'),
-                           my_events=None,
                            weather_data=WeatherData.query.all(),
                            status='Map',
-                           todo_lists=None,
                            mail_counter=get_mail_amount(),
-                           git_data=None,
                            saved_settings=Settings.query.all())
 
 
@@ -335,12 +343,9 @@ def rm():
     db.session.commit()
     return render_template(template_name_or_list='index.html',
                            timestamp=time.strftime('%d %B %Y %H:%M:%S'),
-                           my_events=None,
                            weather_data=WeatherData.query.all(),
                            status='Map',
-                           todo_lists=None,
                            mail_counter=get_mail_amount(),
-                           git_data=None,
                            saved_settings=Settings.query.all())
 
 
@@ -348,12 +353,9 @@ def rm():
 def city_map(city):
     return render_template(template_name_or_list='index.html',
                            timestamp=time.strftime('%d %B %Y %H:%M:%S'),
-                           my_events=None,
                            weather_data=WeatherData.query.all(),
                            status='Map',
-                           todo_lists=None,
                            mail_counter=get_mail_amount(),
-                           git_data=None,
                            saved_settings=Settings.query.all())
 
 
@@ -501,12 +503,9 @@ def todo(board_id='5a58e9ba63b7c51ac07be475',
 
     return render_template(template_name_or_list='index.html',
                            timestamp=time.strftime('%d %B %Y %H:%M:%S'),
-                           my_events=None,
-                           weather_data=None,
                            status='Todo',
                            todo_lists=get_todo_lists(),
                            mail_counter=get_mail_amount(),
-                           git_data=None,
                            saved_settings=Settings.query.all())
 
 

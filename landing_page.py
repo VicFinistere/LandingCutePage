@@ -1,11 +1,12 @@
-#! usr/bin/env python
 """
 Application launcher
 """
-from PyQt5.QtGui import QIcon
+#!/usr/bin/env python3
 
+from PyQt5.QtGui import QIcon
 from page_app.app import app
 from webui import WebUI
+
 ui = WebUI(app, debug=True)
 
 if __name__ == "__main__":

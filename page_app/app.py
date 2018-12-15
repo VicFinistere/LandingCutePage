@@ -308,7 +308,15 @@ def weather():
         if new_city:
             print("Request add for  " + new_city + " !")
             create_weather_data(new_city)
-    return index()
+    return render_template(template_name_or_list='index.html',
+                           timestamp=time.strftime('%d %B %Y %H:%M:%S'),
+                           my_events=None,
+                           weather_data=WeatherData.query.all(),
+                           status='Map',
+                           todo_lists=None,
+                           mail_counter=get_mail_amount(),
+                           git_data=None,
+                           saved_settings=Settings.query.all())
 
 
 def update_weather():
@@ -325,12 +333,28 @@ def rm():
     WeatherData.query.filter_by(name=deleted_city).delete()
     print("Removing " + deleted_city + " from cities !")
     db.session.commit()
-    return index()
+    return render_template(template_name_or_list='index.html',
+                           timestamp=time.strftime('%d %B %Y %H:%M:%S'),
+                           my_events=None,
+                           weather_data=WeatherData.query.all(),
+                           status='Map',
+                           todo_lists=None,
+                           mail_counter=get_mail_amount(),
+                           git_data=None,
+                           saved_settings=Settings.query.all())
 
 
 @app.route('/city_map/<city>', methods=['GET', 'POST'])
 def city_map(city):
-    return index()
+    return render_template(template_name_or_list='index.html',
+                           timestamp=time.strftime('%d %B %Y %H:%M:%S'),
+                           my_events=None,
+                           weather_data=WeatherData.query.all(),
+                           status='Map',
+                           todo_lists=None,
+                           mail_counter=get_mail_amount(),
+                           git_data=None,
+                           saved_settings=Settings.query.all())
 
 
 def create_weather_data(new_city):
@@ -475,7 +499,15 @@ def todo(board_id='5a58e9ba63b7c51ac07be475',
                 list_name = current_list['name']
                 print("\n{}\n".format(list_name))
 
-    return index()
+    return render_template(template_name_or_list='index.html',
+                           timestamp=time.strftime('%d %B %Y %H:%M:%S'),
+                           my_events=None,
+                           weather_data=None,
+                           status='Todo',
+                           todo_lists=get_todo_lists(),
+                           mail_counter=get_mail_amount(),
+                           git_data=None,
+                           saved_settings=Settings.query.all())
 
 
 def get_todo_lists():

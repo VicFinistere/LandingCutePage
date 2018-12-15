@@ -235,6 +235,7 @@
 
 
     var eventsArray = [];
+    {% if my_events %}
     {% for event in my_events %}
     var title = '{{event.title}}';
     var start = '{{event.start}}';
@@ -255,7 +256,8 @@
             eventLimit: true, // allow "more" link when too many events
             events: eventsArray
         });
-    
+    {% endif %}
+
     {% for weather in weather_data %}
     var cityMap = '{{weather.name}}';
     {% endfor %}
@@ -273,7 +275,7 @@
         var mymap = L.map('mapid').setView([51.505, -0.09], 13);
         addLayer(mymap)
     }
-    
+
     function call_map_error() {
         $.getJSON($SCRIPT_ROOT + '/err_map', {},
             function (data)

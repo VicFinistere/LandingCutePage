@@ -1,2 +1,62 @@
 #mapid { height: 180px; }
 #calendar { max-width: 900px; margin: 0 auto; }
+
+#text_area{
+
+    background-color:rgb(235, 235, 228);
+
+    overflow: scroll;
+
+    height: 250px;
+
+    width: 80%;
+
+    padding:15px;
+
+}
+
+p.robot_white_msg{
+
+    background: lightgray;
+
+    color:black;
+
+    padding:20px;
+
+    margin-right: 20%;
+
+    border-radius: 25px;
+
+    width: auto;
+
+    height:auto;
+
+}
+
+
+p.item{
+    color:black;
+    padding:10px;
+    border-radius: 25px;
+    width: auto;
+    height:auto;
+    float:left;
+}
+
+p.user_blue_msg{
+
+    background: deepskyblue;
+
+    color:white;
+
+    padding:20px;
+
+    margin-left: 20%;
+
+    border-radius: 25px;
+
+    width: auto;
+
+    height:auto;
+
+}

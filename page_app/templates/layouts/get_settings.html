@@ -1,0 +1,32 @@
+<form method="post" class="ui-front" action="{{ url_for('settings')}}">
+
+  <!--Imap Client-->
+  <label for="imap">Imap Client</label><br>
+  <input type="text" id="imap" name="imap" placeholder="Imap for mail client" class="form-control"><br>
+
+  <!--Email address-->
+  <label for="mail">E-Mail</label><br>
+  <input type="email" id="mail" name="mail" placeholder="Mail address" class="form-control"><br>
+
+  <!--Password-->
+  <label for="password">Password</label><br>
+  <input type="password" id="password" name="password" placeholder="Password" class="form-control"><br>
+
+  <!--Trello Board Id-->
+  <label for="board_id">Trello Board Id</label><br>
+  <input type="text" id="board_id" name="board_id" placeholder="Trello board id" class="form-control"><br>
+
+  <!--Calendar Id-->
+  <label for="calendar_id">Google Calendar Id</label><br>
+  <input type="text" id="calendar_id" name="calendar_id" placeholder="Google calendar id" class="form-control"><br>
+
+   <!--Git User-->
+  <label for="git_user">Git user</label><br>
+  <input type="text" id="git_user" name="git_user" placeholder="Git user" class="form-control"><br>
+
+  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+  <button type="submit" class="btn btn-primary">
+    <i class="fas fa-fw fa-chart-area"></i>
+    <span>Save</span>
+  </button>
+</form>

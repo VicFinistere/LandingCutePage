@@ -13,23 +13,42 @@
         <li class="nav-item">
             <form class="list-inline-item" method="post" action="{{ url_for('index')}}">
                 <button type="submit" name='status' value="Map" class="btn btn-link nav-link">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Map & Weather</span></a>
+                    <i class="fas fa-fw fa-cloud"></i>
+                    <span>Map & Weather</span>
                 </button>
             </form>
         </li>
         <li class="nav-item">
             <form class="list-inline-item" method="post" action="{{ url_for('index')}}">
                 <button type="submit" name='status' value="Calendar" class="btn btn-link nav-link">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Calendar</span></a>
+                    <i class="fas fa-fw fa-calendar-alt"></i>
+                    <span>Calendar</span>
                 </button>
             </form>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('index') }}#accordion">
-                <i class="fas fa-fw fa-table"></i>
-                <span>Todo cards</span></a>
+            <form class="list-inline-item" method="post" action="{{ url_for('index')}}">
+                <button type="submit" name='status' value="Todo" class="btn btn-link nav-link">
+                    <i class="far fa-fw fa-calendar-check"></i>
+                    <span>Todo cards</span>
+                </button>
+            </form>
+        </li>
+        <li class="nav-item">
+            <form class="list-inline-item" method="post" action="{{ url_for('index')}}">
+                <button type="submit" name='status' value="List" class="btn btn-link nav-link">
+                    <i class="far fa-fw fa-envelope"></i>
+                    <span>Mailing a list</span>
+                </button>
+            </form>
+        </li>
+        <li class="nav-item">
+            <form class="list-inline-item" method="post" action="{{ url_for('index')}}">
+                <button type="submit" name='status' value="Widget" class="btn btn-link nav-link">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Add your widget</span>
+                </button>
+            </form>
         </li>
     </ul>
 
@@ -40,128 +59,76 @@
             <!-- Breadcrumbs-->
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="#">Dashboard</a>
+                    <a href="{{ url_for('index') }}">Dashboard</a>
                 </li>
                 <li class="breadcrumb-item active">Overview</li>
             </ol>
 
-            <!-- Icon Cards-->
-            <div class="row">
-                <div class="col-xl-3 col-sm-6 mb-3">
-                    <div class="card text-white bg-primary o-hidden h-100">
-                        <div class="card-body">
-                            <div class="card-body-icon">
-                                <i class="fas fa-fw fa-cloud"></i>
-                            </div>
-                            <div class="mr-5">Weather data</div>
-                        </div>
-                        <a class="card-footer text-white clearfix small z-1" href="#">
-                            <form class="list-inline-item" method="post" action="{{ url_for('update_weather') }}">
-                                <button style="color:white;" type="submit" class="btn-primary">Refresh</button>
-                            </form>
-                            <span class="float-right">
-                    <i class="fas fa-angle-right"></i>
-                  </span>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-sm-6 mb-3">
-                    <div class="card text-white bg-success o-hidden h-100">
-                        <div class="card-body">
-                            <div class="card-body-icon">
-                                <i class="fas fa-fw fa-comments"></i>
-                            </div>
-                            {% if mail_counter %}
-                                {% if mail_counter == "1" %}
-                                <div class="mr-5">{{ mail_counter }} mail in your box !</div>
-                                {% else %}
-                                <div class="mr-5">{{ mail_counter }} mails in your box !</div>
-                                {% endif %}
-                            {% else %}
-                                <div class="mr-5">No news, good news !</div>
-                            {% endif %}
-                        </div>
-                        <a class="card-footer text-white clearfix small z-1" href="#">
-                            <form class="list-inline-item" method="post" action="{{ url_for('mail') }}">
-                                <button style="color:white;" type="submit" class="btn-success">Check your mailbox</button>
-                            </form>
-                            <span class="float-right">
-                    <i class="fas fa-angle-right"></i>
-                  </span>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-sm-6 mb-3">
-                    <div class="card text-white bg-warning o-hidden h-100">
-                        <div class="card-body">
-                            <div class="card-body-icon">
-                                <i class="fas fa-fw fa-shopping-cart"></i>
-                            </div>
-                            <div class="mr-5">123 New Orders!</div>
-                        </div>
-                        <a class="card-footer text-white clearfix small z-1" href="#">
-                            <span class="float-left">View Details</span>
-                            <span class="float-right">
-                    <i class="fas fa-angle-right"></i>
-                  </span>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-sm-6 mb-3">
-                    <div class="card text-white bg-danger o-hidden h-100">
-                        <div class="card-body">
-                            <div class="card-body-icon">
-                                <i class="fas fa-fw fa-life-ring"></i>
-                            </div>
-                            <div class="mr-5">13 New Tickets!</div>
-                        </div>
-                        <a class="card-footer text-white clearfix small z-1" href="#">
-                            <span class="float-left">View Details</span>
-                            <span class="float-right">
-                    <i class="fas fa-angle-right"></i>
-                  </span>
-                        </a>
-                    </div>
-                </div>
-            </div>
 
             {% if status %}
-                {% if status == "Map" %}
-                    <!-- Show cities-->
-                    {% for weather in weather_data %}
-                    <ul class="list-inline">
-                        <li class="list-inline-item">
-                            <form class="list-inline-item" method="post" action="{{ url_for('rm') }}">
-                                <input type="hidden" name="deleted_city" value="{{weather.name}}">
-                                <button type="submit"><i class="fas fa-times"></i></button>
-                            </form>
-                        </li>
-                        <li class="list-inline-item">
-                            {{ weather.name }}
-                        </li>
-                        <li class="list-inline-item">
-                            <img src="http://openweathermap.org/img/w/{{ weather.icon }}.png" alt="Weather Image">
-                        </li>
-                        <li class="list-inline-item">
-                            <span class="temperature">{{ weather.temperature }}° C</span>
-                        </li>
-                        <li class="list-inline-item">
-                            {{ weather.description }}
-                        </li>
-                    </ul>
-                    <form class="list-inline-item" method="post" action="{{ url_for('city_map', city=weather.name )}}">
-                        <button type="submit" class="btn-default">Show this city</button>
-                    </form>
-                    <form class="list-inline-item" method="post" action="{{ url_for('geoloc_map') }}">
-                        <button type="submit" class="btn-default">Show my localisation</button>
-                    </form>
-                    {% endfor %}
-                    <div id="mapid"></div>
-                {% else %}
-                    <div id='calendar'></div>
-                {% endif %}
-            {% endif %}
+            {% if status == 'Widget' %}
+            <h2>Additionnal Widgets</h2>
+            <small>Instructions you might want to read to add other widget to your cutest landing page.</small><br><br>
+            <h5>Stored Settings</h5>
+            <p>
+                Informations are stored in files because we use SQLAlchemy.<br>
+                If you want to save API Keys, URLS or other configuration data you will have to modify your database models in the app.py file which stores all the app routes, models and methods.
+            </p>
+            <h5>Sidebar</h5>
+            <small>When there are two, there are three.</small>
+            <p>You'll find a place for your favorite widget so you're welcome to add it !</p>
+            <h5>Example</h5>
+            {% elif status == 'List' %}
 
+            <p>
+               <small>Automatically in your email using the email of your settings !</small>
+            </p>
+
+            <div id="text_area" class="col"></div>
+            <div class="form-inline">
+               <input type="text" autofocus id="input_text" class="form-control text-center list-inline-item"
+                      placeholder="What do you want to add in your list ?"><br>
+
+               <button class="btn btn-secondary list-inline-item" id="list_button">Add</button>
+               <br><br>
+               <button class="btn btn-secondary list-inline-item" id="mail_button">Send</button>
+               <br><br>
+            </div>
+            <div id="text_error"></div>
+            {% elif status == "Map" %}
+            <!-- Show cities-->
+            {% for weather in weather_data %}
+            <ul class="list-inline">
+                <li class="list-inline-item">
+                    <form class="list-inline-item" method="post" action="{{ url_for('rm') }}">
+                        <input type="hidden" name="deleted_city" value="{{weather.name}}">
+                        <button type="submit"><i class="fas fa-times"></i></button>
+                    </form>
+                </li>
+                <li class="list-inline-item">
+                    {{ weather.name }}
+                </li>
+                <li class="list-inline-item">
+                    <img src="http://openweathermap.org/img/w/{{ weather.icon }}.png" alt="Weather Image">
+                </li>
+                <li class="list-inline-item">
+                    <span class="temperature">{{ weather.temperature }}° C</span>
+                </li>
+                <li class="list-inline-item">
+                    {{ weather.description }}
+                </li>
+            </ul>
+            <form class="list-inline-item" method="post" action="{{ url_for('city_map', city=weather.name )}}">
+                <button type="submit" class="btn-default">Show this city</button>
+            </form>
+
+            {% endfor %}
+            <div id="mapid"></div>
+            {% elif status == 'Calendar' %}
+            <div id='calendar'></div>
+            {% elif status == 'Mail' %}
+            <script>$('#mailModal').modal('toggle');</script>
+            {% elif status == 'Todo' %}
             <div id="accordion">
                 {% for todo_list in todo_lists %}
                 <div class="card">
@@ -169,7 +136,7 @@
                         <h5 class="mb-0">
                             <button class="btn btn-link" data-toggle="collapse" data-target="#accordion{{loop.index}}"
                                     aria-expanded="true" aria-controls="accordion{{loop.index}}">
-                                 {{ todo_list.0 }} ( {{ todo_list.1|length }} )
+                                {{ todo_list.0 }} ( {{ todo_list.1|length }} )
                             </button>
                         </h5>
                     </div>
@@ -187,6 +154,120 @@
                 </div>
                 {% endfor %}
             </div>
+            {% endif %}
+            {% else %}
+            <!-- Icon Cards-->
+            <div class="row">
+                <div class="col-xl-3 col-sm-6 mb-3">
+                    <div class="card text-white bg-primary o-hidden h-100">
+                        <div class="card-body">
+                            <div class="card-body-icon">
+                                <i class="fas fa-fw fa-cloud"></i>
+                            </div>
+                            <div class="mr-5">Weather data</div>
+                        </div>
+                        <a class="card-footer text-white clearfix small z-1" href="#">
+                            <form class="list-inline-item" method="post" action="{{ url_for('index') }}">
+                                <button style="color:white;" type="submit" class="btn-primary" name='status'
+                                        value='update_weather'>
+                                    <span>Refresh</span>
+                                </button>
+                            </form>
+                            <span class="float-right">
+                    <i class="fas fa-angle-right"></i>
+                  </span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-sm-6 mb-3">
+                    <div class="card text-white bg-success o-hidden h-100">
+                        <div class="card-body">
+                            <div class="card-body-icon">
+                                <i class="fas fa-fw fa-comments"></i>
+                            </div>
+                            {% if mail_counter %}
+                            {% if mail_counter == "1" %}
+                            <div class="mr-5">{{ mail_counter }} mail in your box !</div>
+                            {% else %}
+                            <div class="mr-5">{{ mail_counter }} mails in your box !</div>
+                            {% endif %}
+                            {% else %}
+                            <div class="mr-5">No news, good news !</div>
+                            {% endif %}
+                        </div>
+                        <a class="card-footer text-white clearfix small z-1" href="#">
+                            <form class="list-inline-item" method="post" action="{{ url_for('index') }}">
+                                <button style="color:white;" type="submit" class="btn-success" name='status'
+                                        value='Mail'>
+                                    <span>Check your mailbox</span>
+                                </button>
+                            </form>
+                            <span class="float-right">
+                    <i class="fas fa-angle-right"></i>
+                  </span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-sm-6 mb-3">
+                    <div class="card text-white bg-warning o-hidden h-100">
+                        <div class="card-body">
+                            <div class="card-body-icon">
+                                <i class="fas fa-fw fa-shopping-cart"></i>
+                            </div>
+                            <div class="mr-5">{{ my_events|length }} events !</div>
+                        </div>
+                        <a class="card-footer text-white clearfix small z-1" href="#">
+                            <form class="list-inline-item" method="post" action="{{ url_for('index') }}">
+                                <button style="color:white;" type="submit" class="btn-warning" name='status'
+                                        value='Calendar'>
+                                    <span>Check calendar</span>
+                                </button>
+                            </form>
+                            <span class="float-right">
+                    <i class="fas fa-angle-right"></i>
+                  </span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-sm-6 mb-3">
+                    <div class="card text-white bg-danger o-hidden h-100">
+                        <div class="card-body">
+                            <div class="card-body-icon">
+                                <i class="fas fa-fw fa-life-ring"></i>
+                            </div>
+                            {% if git_data %}
+                            {% if git_data != 111 %}
+                            <div class="mr-5">{{git_data.0}} projects on Github !</div>
+                            {% else %}
+                            <div class="mr-5">Github projects</div>
+                            {% endif %}
+                            {% else %}
+                            <div class="mr-5">Github projects</div>
+                            {% endif %}
+                        </div>
+                        <a class="card-footer text-white clearfix small z-1" href="#">
+                            <button class="float-left btn-danger" type="button" data-toggle="modal"
+                                    data-target="#issuesModal">
+                                {% if git_data %}
+                                {% if git_data.1 != 111 %}
+                                {{ git_data.1 }} issues
+                                {% else %}
+                                Check for issues
+                                {% endif %}
+                                {% else %}
+                                Check for issues
+                                {% endif %}
+                            </button>
+
+                            <span class="float-right">
+                    <i class="fas fa-angle-right"></i>
+                  </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
 
             <div class="card-footer small text-muted">{{ timestamp }}</div>
         </div>

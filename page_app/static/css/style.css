@@ -15,6 +15,20 @@
 
 }
 
+#tchat_area{
+
+    background-color:rgb(235, 235, 228);
+
+    overflow: scroll;
+
+    height: 250px;
+
+    width: 100%;
+
+    padding:15px;
+
+}
+
 p.robot_white_msg{
 
     background: lightgray;
@@ -31,6 +45,7 @@ p.robot_white_msg{
 
     height:auto;
 
+    margin:0px ;
 }
 
 
@@ -58,5 +73,7 @@ p.user_blue_msg{
     width: auto;
 
     height:auto;
+
+    margin:0px ;
 
 }

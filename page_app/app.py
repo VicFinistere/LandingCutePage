@@ -1,11 +1,14 @@
 import imaplib
 import json
+import random
 import time
 
 import requests
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_mail import Mail, Message
 from flask_sqlalchemy import SQLAlchemy
+
+from page_app.config import ROOT
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -207,8 +210,12 @@ def fetch_cat(image=None):
     while image is None:
         if response:
             for res in response:
-                for data in json.loads(res):
-                    image = data['url']
+                try:
+                    for data in json.loads(res):
+                        image = data['url']
+                except ValueError:
+                    pass
+
     return image
 
 
@@ -256,6 +263,30 @@ def index():
                            git_data=git_data,
                            cat=fetch_cat(),
                            saved_settings=saved_settings)
+
+
+@app.route('/get_dialog', methods=['GET', 'POST'])
+def check_for_response():
+    answer = None
+    current_input = request.args.get('input')
+    with open(ROOT + '/static/json/chat_inputs.json', encoding='utf-8') as input_file:
+        inputs = json.loads(input_file.read())
+
+        for i, response in enumerate(inputs):
+            if response == current_input:
+
+                with open(ROOT + '/static/json/chat_outputs.json', encoding='utf-8') as output_file:
+                    outputs = json.loads(output_file.read())
+                    answer = random.choice(outputs[i])
+    print(answer)
+    return jsonify(answer)
+
+
+@app.route('/write_dialog', methods=['GET', 'POST'])
+def set_chatbot_data():
+    # Using stopwords file
+    with open(ROOT + '/static/json/dialogs.json', 'r') as file:
+        return json.load(file)
 
 
 @app.route('/events', methods=['GET', 'POST'])

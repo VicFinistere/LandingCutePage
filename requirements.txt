@@ -1,10 +1,12 @@
 apiclient==1.0.3
 beautifulsoup4==4.6.3
+blinker==1.4
 cachetools==3.0.0
 certifi==2018.10.15
 chardet==3.0.4
 Click==7.0
 Flask==0.12.1
+Flask-Mail==0.9.1
 Flask-SQLAlchemy==2.3.2
 google-api-python-client==1.7.4
 google-auth==1.6.1
@@ -17,6 +19,7 @@ Jinja2==2.10
 MarkupSafe==1.1.0
 pyasn1==0.4.4
 pyasn1-modules==0.2.2
+PyFladesk==1.0
 PyQt5==5.8.2
 PyQt5-sip==4.19.13
 pyqt5-tools==5.11.2.1.3
